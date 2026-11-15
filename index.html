@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Atlas Packer for TreeFrogUI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Outfit:wght@400;500&display=swap"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/x-icon" href="assets/logo.ico" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to the packer</a>
+
+    <header>
+      <a href="https://github.com/tzubertowski/TreeFrogUI">
+        <img
+          class="logo"
+          id="logo"
+          src="assets/logo.png"
+          alt="TreeFrogUI"
+          width="50"
+        />
+      </a>
+
+      <h1>Atlas Packer</h1>
+      <p class="lead">
+        Turn a GameMaker 1.4 <code>data.win</code> or <code>game.unx</code> file
+        into the <code>ATLAS.BIN</code> and <code>ATLAS.RGBA4444</code> files
+        the console runtime reads. Everything runs in this browser tab. Your
+        game file is never uploaded. Only tested with Undertale.
+      </p>
+      <noscript
+        ><p class="error">
+          This tool needs JavaScript to pack files.
+        </p></noscript
+      >
+    </header>
+
+    <main id="main" tabindex="-1">
+      <section aria-labelledby="file-heading">
+        <h2 id="file-heading">Game data</h2>
+        <label class="drop" id="drop">
+          <input
+            class="visually-hidden"
+            type="file"
+            id="file"
+            aria-describedby="file-meta"
+          />
+          <span class="drop-title" id="file-name"
+            >Choose data.win or game.unx</span
+          >
+          <span class="drop-meta" id="file-meta" role="status"
+            >or drag the file onto this box</span
+          >
+        </label>
+      </section>
+
+      <fieldset>
+        <legend>Target resolution</legend>
+        <div class="choices">
+          <div class="choice">
+            <input
+              type="radio"
+              name="res"
+              id="res-320"
+              value="320x240"
+              checked
+            /><label for="res-320">320 x 240</label>
+          </div>
+          <div class="choice">
+            <input type="radio" name="res" id="res-640" value="640x480" /><label
+              for="res-640"
+              >640 x 480</label
+            >
+          </div>
+          <div class="choice">
+            <input
+              type="radio"
+              name="res"
+              id="res-custom"
+              value="custom"
+            /><label for="res-custom">Custom</label>
+          </div>
+        </div>
+        <div class="custom" id="custom" hidden>
+          <div class="field">
+            <label for="custom-w">Width (px)</label
+            ><input
+              type="number"
+              id="custom-w"
+              inputmode="numeric"
+              min="16"
+              max="4096"
+              value="480"
+            />
+          </div>
+          <span class="times" aria-hidden="true">x</span>
+          <div class="field">
+            <label for="custom-h">Height (px)</label
+            ><input
+              type="number"
+              id="custom-h"
+              inputmode="numeric"
+              min="16"
+              max="4096"
+              value="320"
+            />
+          </div>
+        </div>
+        <p class="note" id="res-note" role="status"></p>
+        <p class="hint" id="res-hint"></p>
+      </fieldset>
+
+      <section aria-label="Start">
+        <button
+          class="go"
+          id="go"
+          type="button"
+          disabled
+          aria-describedby="go-help"
+        >
+          Pack assets
+        </button>
+        <p class="hint" id="go-help">Choose a game file first.</p>
+      </section>
+
+      <p class="error" id="error" role="alert" tabindex="-1" hidden></p>
+
+      <section
+        id="progress"
+        tabindex="-1"
+        aria-labelledby="progress-title"
+        hidden
+      >
+        <h2 id="progress-title">Packing progress</h2>
+        <div
+          class="track"
+          id="track"
+          role="progressbar"
+          aria-labelledby="progress-title"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+          aria-valuetext="0 percent"
+        >
+          <div class="fill" id="fill"></div>
+        </div>
+        <p class="progress-text">
+          <span class="percent" id="percent" aria-hidden="true">0%</span>
+          <span id="detail" aria-hidden="true"></span>
+        </p>
+        <p class="visually-hidden" id="phase" role="status"></p>
+      </section>
+
+      <section id="done" aria-labelledby="done-title" hidden>
+        <h2 id="done-title" tabindex="-1">Finished</h2>
+        <div class="downloads">
+          <a class="download" id="dl-bin" download="ATLAS.BIN"
+            ><strong>Download ATLAS.BIN</strong><span id="size-bin"></span
+          ></a>
+          <a class="download" id="dl-pix" download="ATLAS.RGBA4444"
+            ><strong>Download ATLAS.RGBA4444</strong><span id="size-pix"></span
+          ></a>
+        </div>
+        <dl class="report" id="report"></dl>
+      </section>
+    </main>
+
+    <footer>
+      Adapted from
+      <a href="https://github.com/Synaps33/FroggyTale"
+        >https://github.com/Synaps33/FroggyTale</a
+      >
+      pack_assets.py tool.
+    </footer>
+  </body>
+</html>
